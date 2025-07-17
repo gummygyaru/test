@@ -14,61 +14,6 @@ title: Register for chara.vault
 <p id="message"></p>
 <p id="spam-note">📫 Can’t find the email? Be sure to check your spam folder!</p>
 
-<style>
-  /* You can move this to your main stylesheet later */
-  body {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: #f4f4f8;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 80px;
-  }
-  h2 {
-    color: #9333ea;
-  }
-  form {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-  }
-  input {
-    padding: 10px;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-  }
-  button {
-    background: #9333ea;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  button:hover {
-    background: #7e22ce;
-  }
-  #message {
-    margin-top: 1rem;
-    color: #e11d48;
-  }
-  #message.success {
-    color: #10b981;
-  }
-  #spam-note {
-    font-size: 0.9rem;
-    color: #555;
-    margin-top: 0.5rem;
-    display: none;
-  }
-</style>
-
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
   import {
@@ -107,14 +52,11 @@ title: Register for chara.vault
     const password = document.getElementById("register-password").value;
 
     try {
-      // 1. Create user with email & password
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // 2. Send verification email to user
       await sendEmailVerification(user);
 
-      // 3. Create a new document in Firestore "users" collection using user.uid as the document ID
       await setDoc(doc(db, "users", user.uid), {
         email: user.email,
         username: email.split("@")[0].toLowerCase(),
@@ -127,7 +69,6 @@ title: Register for chara.vault
       messageEl.classList.add("success");
       spamNote.style.display = "block";
 
-      // Redirect to login page after 4 seconds
       setTimeout(() => {
         window.location.href = "/login/";
       }, 4000);
@@ -139,4 +80,3 @@ title: Register for chara.vault
     }
   });
 </script>
-
