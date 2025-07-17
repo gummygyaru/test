@@ -1,17 +1,13 @@
-// layout.js
-
 document.addEventListener("DOMContentLoaded", () => {
   // Inject base styles
   const style = document.createElement("style");
   style.innerHTML = `
-    /* Base container */
     .main-container {
       max-width: 1200px;
       margin: 0 auto;
       padding: 2rem;
     }
 
-    /* Sidebar */
     #sidebar {
       position: fixed;
       top: 0;
@@ -43,7 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
       z-index: 1100;
     }
 
-    /* Submit dropdown */
     #submit-dropdown {
       display: none;
       position: absolute;
@@ -82,7 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
       background-color: #f0f0f0;
     }
 
-    /* Server info bar */
     .server-info {
       display: flex;
       justify-content: space-between;
@@ -99,7 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Sidebar toggle
   const sidebarToggle = document.getElementById("sidebar-toggle");
   const sidebar = document.getElementById("sidebar");
-
   if (sidebarToggle && sidebar) {
     sidebarToggle.addEventListener("click", () => {
       sidebar.classList.toggle("open");
@@ -109,7 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Submit dropdown
   const submitButton = document.getElementById("submit-button");
   const submitDropdown = document.getElementById("submit-dropdown");
-
   if (submitButton && submitDropdown) {
     submitButton.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -141,8 +133,26 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       serverTime.textContent = `Server Time: ${formatted}`;
     }
-
     updateTime();
     setInterval(updateTime, 60000);
+  }
+
+  // Theme switching
+  const theme = localStorage.getItem("theme") || "fire-vault";
+  const stylesheet = document.getElementById("theme-stylesheet");
+  if (stylesheet) {
+    stylesheet.href = `/assets/css/themes/${theme}.css`;
+  }
+
+  const themeSelect = document.getElementById("theme-selector");
+  if (themeSelect) {
+    themeSelect.value = theme;
+    themeSelect.addEventListener("change", () => {
+      const selectedTheme = themeSelect.value;
+      localStorage.setItem("theme", selectedTheme);
+      if (stylesheet) {
+        stylesheet.href = `/assets/css/themes/${selectedTheme}.css`;
+      }
+    });
   }
 });
