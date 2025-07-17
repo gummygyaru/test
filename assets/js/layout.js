@@ -1,45 +1,148 @@
 // layout.js
 
-document.addEventListener("DOMContentLoaded", function () {
-  // Toggle sidebar (if you have one)
-  const sidebarToggle = document.querySelector("#sidebar-toggle");
-  const sidebar = document.querySelector("#sidebar");
+document.addEventListener("DOMContentLoaded", () => {
+  // Inject base styles
+  const style = document.createElement("style");
+  style.innerHTML = `
+    /* Base container */
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Sidebar */
+    #sidebar {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      width: 250px;
+      height: 100%;
+      background-color: var(--sidebar-bg, #222);
+      color: var(--sidebar-color, #fff);
+      padding: 1rem;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      transition: left 0.3s ease;
+      z-index: 1000;
+    }
+
+    #sidebar.open {
+      left: 0;
+    }
+
+    #sidebar-toggle {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background-color: var(--accent, #8e44ad);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      z-index: 1100;
+    }
+
+    /* Submit dropdown */
+    #submit-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: var(--dropdown-bg, #fff);
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 0.5rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+    }
+
+    #submit-dropdown.show {
+      display: block;
+    }
+
+    #submit-button {
+      position: relative;
+      background-color: var(--accent, #8e44ad);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #submit-dropdown a {
+      display: block;
+      color: #333;
+      text-decoration: none;
+      padding: 0.25rem 0.5rem;
+    }
+
+    #submit-dropdown a:hover {
+      background-color: #f0f0f0;
+    }
+
+    /* Server info bar */
+    .server-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--info-bg, #f5f5f5);
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid #ccc;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Sidebar toggle
+  const sidebarToggle = document.getElementById("sidebar-toggle");
+  const sidebar = document.getElementById("sidebar");
+
   if (sidebarToggle && sidebar) {
     sidebarToggle.addEventListener("click", () => {
       sidebar.classList.toggle("open");
     });
   }
 
-  // Toggle submit dropdown
-  const submitButton = document.querySelector("#submit-button");
-  const submitMenu = document.querySelector("#submit-dropdown");
-  if (submitButton && submitMenu) {
+  // Submit dropdown
+  const submitButton = document.getElementById("submit-button");
+  const submitDropdown = document.getElementById("submit-dropdown");
+
+  if (submitButton && submitDropdown) {
     submitButton.addEventListener("click", (e) => {
       e.stopPropagation();
-      submitMenu.classList.toggle("show");
+      submitDropdown.classList.toggle("show");
     });
 
-    document.addEventListener("click", () => {
-      submitMenu.classList.remove("show");
+    document.addEventListener("click", (e) => {
+      if (!submitDropdown.contains(e.target) && e.target !== submitButton) {
+        submitDropdown.classList.remove("show");
+      }
     });
   }
 
-  // Simulate users online and server time (fake demo)
-  const usersOnline = document.querySelector("#users-online");
-  const serverTime = document.querySelector("#server-time");
-
+  // Fake users online
+  const usersOnline = document.getElementById("users-online");
   if (usersOnline) {
-    const randomUsers = Math.floor(Math.random() * 100) + 1;
-    usersOnline.textContent = `${randomUsers} Users Online`;
+    const fakeOnline = Math.floor(Math.random() * 1000) + 100;
+    usersOnline.textContent = `${fakeOnline} users online`;
   }
 
+  // Server time
+  const serverTime = document.getElementById("server-time");
   if (serverTime) {
-    const now = new Date();
-    const hours = now.getHours();
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const suffix = hours >= 12 ? "PM" : "AM";
-    const formattedTime = `${((hours + 11) % 12 + 1)}:${minutes} ${suffix}`;
-    serverTime.textContent = formattedTime;
+    function updateTime() {
+      const now = new Date();
+      const formatted = now.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      serverTime.textContent = `Server Time: ${formatted}`;
+    }
+
+    updateTime();
+    setInterval(updateTime, 60000);
   }
 });
-
