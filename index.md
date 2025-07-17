@@ -9,9 +9,9 @@ permalink: /
   <p>A place to store your characters ✨</p>
 
   <div class="btn-container">
-    <a href="/trending/" class="btn">Check out site</a>
-    <a href="/login/" class="btn">Login</a>
-    <a href="/register/" class="btn">Register</a>
+    <a href="trending.html" class="btn">Check out site</a>
+    <a href="login.html" class="btn">Login</a>
+    <a href="register.html" class="btn">Register</a>
   </div>
 </header>
 
