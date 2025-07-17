@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <title>{{ page.title }}</title>
-  <link rel="icon" href="/assets/images/favicon.png" />
+  <link rel="icon" href="assets/images/favicon.png" />
 
   <!-- Dynamic theme loader -->
   <link id="theme-stylesheet" rel="stylesheet" href="" />
   <noscript>
-    <link rel="stylesheet" href="/assets/css/themes/fire-vault.css" />
+    <link rel="stylesheet" href="assets/css/themes/fire-vault.css" />
   </noscript>
 
   <!-- Scripts -->
@@ -17,10 +17,13 @@
     document.addEventListener("DOMContentLoaded", function () {
       const selectedTheme = localStorage.getItem("theme") || "fire-vault";
       const stylesheet = document.getElementById("theme-stylesheet");
-      stylesheet.href = `/assets/css/themes/${selectedTheme}.css`;
+      // Use relative path for best compatibility (adjust if your site uses a custom base URL)
+      if (stylesheet) {
+        stylesheet.href = "assets/css/themes/" + selectedTheme + ".css";
+      }
     });
   </script>
-  <script src="/assets/js/layout.js" defer></script>
+  <script src="assets/js/layout.js" defer></script>
 </head>
 <body>
   {% include header.html %}
