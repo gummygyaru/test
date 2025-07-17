@@ -1,1 +1,6 @@
+title: chara.vault
+description: A character storage and customization site.
+baseurl: "" # Only change this if hosted in a subfolder
+url: "https://yourdomain.com" # Or your GitHub Pages URL
+theme: null
 
