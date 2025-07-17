@@ -99,6 +99,11 @@
     <h1>chara.<span class="vault">vault</span></h1>
   </div>
   <div class="header-right">
+    <!-- New Dashboard/Home Button -->
+    <a href="dashboard/dashboard.html" title="Dashboard" class="icon-link">
+      <i class="fas fa-house"></i>
+    </a>
+
     <a href="profile.html" title="Profile" class="icon-link">
       <i class="fas fa-user-circle"></i>
     </a>
@@ -120,50 +125,3 @@
     </div>
   </div>
 </header>
-
-<!-- Firebase Notification Script -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-  import { getFirestore, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyDDZvaWl5qwJbvPOHN1pisGwfIN2gkj1Ec",
-    authDomain: "charavault-e8cf5.firebaseapp.com",
-    projectId: "charavault-e8cf5",
-    storageBucket: "charavault-e8cf5.appspot.com",
-    messagingSenderId: "385710051091",
-    appId: "1:385710051091:web:a38d5ac0047ec32a0914e6",
-    measurementId: "G-JNLB26DXJC"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
-
-  const notifCount = document.getElementById("notifCount");
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const notifRef = collection(db, "notifications");
-      const q = query(
-        notifRef,
-        where("userId", "==", user.uid),
-        where("read", "==", false)
-      );
-
-      onSnapshot(q, (querySnapshot) => {
-        const unreadCount = querySnapshot.size;
-        if (unreadCount > 0) {
-          notifCount.textContent = unreadCount;
-          notifCount.style.display = "inline-block";
-        } else {
-          notifCount.style.display = "none";
-        }
-      });
-    } else {
-      notifCount.style.display = "none";
-    }
-  });
-</script>
-
